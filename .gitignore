@@ -1,0 +1,7 @@
+node_modules/
+public/
+themes/*
+#!themes/simple/
+*.zip
+db.json
+.DS_Store
