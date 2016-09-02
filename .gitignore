@@ -2,6 +2,7 @@ node_modules/
 public/
 themes/*
 !themes/simple/
+themes/simple/source/material-design-lite-1.0.6
 *.zip
 db.json
 .DS_Store
