@@ -1,0 +1,48 @@
+<article class="my-card">
+	<header class="my-card-title my-card-border">
+		<h1 class="my-card-title-text">
+		<% if(post.link) { %>
+			<a href="<%- post.link %>" target="_blank" title="<%= post.title %>"><%= post.title %></a>
+		<% } else { %>
+			<a href="<%- url_for(post.path) %>" title="<%= post.title %>" postprop="url"><%= post.title %></a>
+		<% } %>
+		</h1>
+
+		<div class="article-info">
+			发表于
+			<span class="date"><%= moment(post.date).format('YYYY-MM-DD') %></span>
+			<% if (post.categories && post.categories.length){ %>
+				&nbsp; | &nbsp;
+				分类于
+				<%- list_categories(post.categories, {
+					show_count: false,
+				}) %>
+			<% } %>
+			<% if (post.tags && post.tags.length){ %>
+				&nbsp; | &nbsp;
+				标签
+				<%- list_tags(post.tags, {
+					show_count: false,
+				}) %>
+			<% } %>
+			&nbsp; | &nbsp;
+			阅读
+			<span class="blog-tools-api" get-pages-data <% if (!is_home()) { %>page-view<% } %> data-page="<%= config.root %><%= post.path %>"></span>
+			&nbsp; | &nbsp;
+			评论
+			<span class="blog-tools-api" data-page="<%= config.root %><%= post.path %>"></span>
+		</div>
+	</header>
+
+	<div class="my-card-content">
+		<% if (index && post.excerpt){ %>
+		<%- post.excerpt %>
+		<% } else { %>
+		<%- post.content %>
+		<% } %>
+
+		<% if (index && post.excerpt && theme.index.excerpt_link){ %>
+			<a class="my-button my-button-flat" href="<%- url_for(post.path) %>#more"><%= theme.index.excerpt_link %></a>
+		<% } %>
+	</div>
+</article>

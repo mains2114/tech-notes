@@ -1,0 +1,30 @@
+<%- partial('_partial/article', {post: page, index: false}) %>
+
+<div class="my-card">
+	<div class="post-nav">
+		<% if (page.next) { %>
+		<a class="post-nav-left" href="<%- url_for(page.next.path) %>">‹&nbsp;&nbsp;<%= page.next.title %></a>
+		<% } else { %>
+		<span class="post-nav-left" href="#">‹&nbsp;&nbsp;无</span>
+		<% } %>
+
+		<% if (page.prev) { %>
+		<a class="post-nav-right" href="<%- url_for(page.prev.path) %>"><%= page.prev.title %>&nbsp;&nbsp;›</a>
+		<% } else { %>
+		<span class="post-nav-right" href="#">无&nbsp;&nbsp;›</span>
+		<% } %>
+	</div>
+</div>
+
+<% if (theme.duoshuo_shortname && page.comments){ %>
+<section id="comments" class="comment my-card">
+	<div class="ds-thread my-card-content" data-thread-key="<%- page.path %>" data-title="<%- page.title %>" data-url="<%- page.permalink %>"></div>
+</section>
+<% } %>
+<% if( (config.disqus_shortname || theme.disqus_shortname) && page.comments) { %>
+<section id="comments" class="comment my-card">
+  <div id="disqus_thread" class="my-card-content">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </div>
+</section>
+<% } %>

@@ -1,0 +1,77 @@
+<script type="text/javascript">
+(function () {
+	'use strict'
+
+	var actions = [],
+		pages = [],
+		actionGetPagesData = false,
+		actoinPageView = false,
+		pageViewTarget = '',
+		pageViewKey = '',
+		cache = {};
+
+	var elements = document.getElementsByClassName('blog-tools-api');
+	for (var i = 0; i < elements.length; i++) {
+		var el = elements[i],
+			page = el.getAttribute('data-page');
+
+		if (el.hasAttribute('get-pages-data')) {
+			cache[page] = el;
+
+			pages.push(page);
+
+			if (!actionGetPagesData) {
+				actionGetPagesData = true;
+				actions.push('getPagesData');
+			}
+		}
+
+		if (el.hasAttribute('page-view') && actoinPageView === false) {
+			actoinPageView = true;
+			pageViewKey = page;
+			actions.push('pageView');
+		}
+	}
+
+	var displayPagesViews = function (data) {
+		var j, pageUri, selector, el;
+		if (data.getPagesData) {
+			for (j = 0; j < data.getPagesData.length; j++) {
+				pageUri = data.getPagesData[j].uri;
+
+				if (cache[pageUri]) {
+					cache[pageUri].innerText = data.getPagesData[j].view;
+				}
+			}
+		}
+	};
+
+	var request = new XMLHttpRequest();
+	request.onreadystatechange = function (event) {
+		if (request.readyState === XMLHttpRequest.DONE) {
+			if (request.status === 200) {
+				var response = JSON.parse(request.responseText);
+				console.log(response);
+
+				displayPagesViews(response);
+			} else {
+				console.log('There was a problem with the request.');
+			}
+		}
+	};
+
+	var form = new FormData();
+	form.append('host', location.hostname);
+	form.append('pageViewKey', pageViewKey);
+
+	for (var i = 0; i < actions.length; i++) {
+		form.append('action[]', actions[i]);
+	}
+	for (var i = 0; i < pages.length; i++) {
+		form.append('pages[]', pages[i]);
+	}
+
+	request.open('post', '/api.php');
+	request.send(form);
+})();
+</script>

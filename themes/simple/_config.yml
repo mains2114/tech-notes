@@ -1,0 +1,38 @@
+# Header
+title: ...
+menu:
+  主页 / Home: /
+  归档 / Archives: /archives
+  关于 / About: /about
+
+rss: /atom.xml
+
+# Content
+fancybox: true
+
+# Sidebar
+sidebar: right
+widgets:
+- category
+- tag
+- tagcloud
+- archive
+# - recent_posts
+
+# Miscellaneous
+#google_analytics: UA-71710228-1
+#baidu_tongji: adfcca350afc4799ed0e26f7a7013f40
+favicon: /favicon.png
+apple_icon:
+twitter:
+google_plus:
+fb_admins:
+fb_app_id:
+
+# Comment
+duoshuo_shortname: mains2114
+# disqus_shortname: mains2114
+
+index:
+  expand: true
+  excerpt_link: 全文阅读

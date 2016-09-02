@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html <% if (config.language) { %>lang="<%= config.language %>"<% } %>>
+<head>
+	<meta charset="utf-8">
+	<%
+	var title = page.title;
+
+	if (is_archive()){
+		title = '归档';
+
+		if (is_month()){
+			title += ': ' + page.year + '/' + page.month;
+		} else if (is_year()){
+			title += ': ' + page.year;
+		}
+	} else if (is_category()){
+		title = '分类: ' + page.category;
+	} else if (is_tag()){
+		title = '标签: ' + page.tag;
+	}
+	%>
+
+	<title><% if (title){ %><%= title %> | <% } %><%= config.title %></title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<% if (config.author){ %>
+	<meta name="author" content="<%= config.author %>">
+	<% } %>
+
+	<% if (page.keywords){ %>
+	<meta name="keywords" content="<%= page.keywords %>">
+	<% } %>
+
+	<% if (theme.rss){ %>
+	<link rel="alternative" href="<%- theme.rss %>" title="<%= config.title %>" type="application/atom+xml">
+	<% } %>
+
+	<% if (theme.favicon){ %>
+	<link rel="icon" href="<%- url_for(theme.favicon) %>?v=20160612">
+	<% } %>
+
+	<% if (theme.apple_icon){ %>
+	<link rel="apple-touch-icon" href="<%- config.root %><%- theme.apple_icon %>">
+	<link rel="apple-touch-icon-precomposed" href="<%- config.root %><%- theme.apple_icon %>">
+	<% } %>
+
+	<%- css('css/style') %>
+</head>
+<body>
+	<header class="my-header">
+		<div class="my-header-container">
+			<!--<img src="<%- url_for('favicon.png') %>">-->
+			<a class="my-header-title" href="<%- url_for('/') %>"><%= config.title %></a>
+			<div class="my-header-spacer"></div>
+			<nav class="my-navigation">
+			<% for (var i in theme.menu){ %>
+				<a class="my-navigation-link" href="<%- url_for(theme.menu[i]) %>"><%= i %></a>
+			<% } %>
+			</nav>
+		</div>
+	</header>
+
+	<main class="my-container">
+		<div class="my-flex">
+			<div class="my-flex-main">
+				<%- body %>
+			</div>
+			<div class="my-flex-gutter"></div>
+			<div class="my-flex-aside">
+				<% if (is_post()) { %>
+					<div class="my-card">
+						<div class="my-card-title my-card-border">
+							<h1>章节</h1>
+						</div>
+						<div class="my-card-content">
+							<%- toc(page.content) %>
+						</div>
+					</div>
+				<% } %>
+<!--
+				<div class="my-card my-profiler">
+					<div class="my-card-content">
+						<img src="<%- url_for('avatar.gif') %>" alt="Huang" class="avatar">
+						<p><%= config.author %></p>
+
+						<% if (config.description) { %>
+							<p><%= config.description %></p>
+						<% } %>
+					</div>
+				</div>
+ -->
+				<div class="my-card">
+				<% if (site.categories.length){ %>
+					<div class="my-card-title my-card-border">
+						<h1>分类</h1>
+					</div>
+					<div class="my-card-content">
+						<%- list_categories() %>
+					</div>
+				<% } %>
+
+				<% if (site.posts.length){ %>
+					<div class="my-card-title my-card-border">
+						<h1>归档</h1>
+					</div>
+					<div class="my-card-content">
+						<%- list_archives({
+							format: 'YYYY年MMMM'
+						}) %>
+					</div>
+				<% } %>
+
+				<% if (site.tags.length){ %>
+					<div class="my-card-title my-card-border">
+						<h1>标签云</h1>
+					</div>
+					<div class="my-card-content">
+						<%- tagcloud() %>
+					</div>
+				<% } %>
+
+					<div class="my-card-title my-card-border">
+						<h1>友情链接</h1>
+					</div>
+					<div class="my-card-content">
+						<ul class="category-list">
+							<li class="category-list-item">
+								<a target="_blank" href="//xiawenxing.cn/">老司机夏总干</a>
+							</li>
+							<li class="category-list-item">
+								<a target="_blank" href="//irayd.com/">Ray</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<footer class="my-footer">
+			<div class="mdl-mini-footer__left-section">
+				<div class="mdl-logo">
+					© 2016 <%= config.author %>,
+					Powered By <a target="_blank" href="//hexo.io/">Hexo</a>,
+					Theme <a href="">Simple</a> base on <a target="_blank" href="//getmdl.io/">MDL</a>
+				</div>
+				<!--
+				<ul class="mdl-mini-footer__link-list">
+					<li><a href="#">1</a></li>
+					<li><a href="#">2</a></li>
+					<li><a href="#">3</a></li>
+				</ul>
+				-->
+			</div>
+			<!--
+			<div class="mdl-mini-footer__right-section">
+				<i class="material-icons">add_box</i>
+				<i class="material-icons">add_alarm</i>
+				<button class="mdl-mini-footer__social-btn">
+					<i></i>
+				</button>
+			</div>
+			-->
+		</footer>
+	</main>
+
+<%- partial('_partial/article-summary') %>
+<%- partial('_partial/google-analytics') %>
+<%- partial('_partial/baidu-tongji') %>
+
+<%- partial('_partial/duoshuo') %>
+<%- partial('_partial/disqus') %>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<% var last; %>
+<% page.posts.each(function(post, i){ %>
+	<% var year = post.date.year(); %>
+	<% if (last != year){ %>
+		<% if (last != null){ %>
+			</div></section>
+		<% } %>
+		<% last = year; %>
+		<section class="my-card">
+			<div class="my-card-title my-card-border">
+				<h1><a href="<%- url_for('archives/' + year) %>" class="archive-year"><%= year %></a></h1>
+			</div>
+			<div class="my-card-content">
+	<% } %>
+	<article class="">
+		<div class="archive-article-inner">
+			<header class="archive-article-header">
+				<%= date(post.date, 'MM-DD') %>
+				<h1 class="mdl-card__title-text">
+				<% if(post.link) { %>
+					<a href="<%- post.link %>" target="_blank" title="<%= post.title %>"><%= post.title %></a>
+				<% } else { %>
+					<a href="<%- url_for(post.path) %>" title="<%= post.title %>" postprop="url"><%= post.title %></a>
+				<% } %>
+				</h1>
+			</header>
+		</div>
+	</article>
+<% }) %>
+<% if (page.posts.length){ %>
+	</div></section>
+<% } %>
+
+<% if (page.total > 1){ %>
+	<div class="my-card">
+		<div class="paginator">
+			<%- paginator({
+				prev_next: true,
+				prev_text: '‹',
+				next_text: '›',
+			}) %>
+		</div>
+	</div>
+<% } %>
