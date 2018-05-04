@@ -4,11 +4,12 @@
 
 # Site
 title: Web开发从入门到放弃
-subtitle: 黄海峰的技术分享博客
+subtitle: 简单的技术分享博客
 description:
 author: Huang Haifeng
 language: zh-CN
 timezone:
+beianNo: 鄂ICP备15011861号-1
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
